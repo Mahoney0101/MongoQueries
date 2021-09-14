@@ -79,3 +79,19 @@ db.QueryPractice.updateMany(
       arrayFilters: [ { "elem.Percent": { $lte : 2 } }]}
 )
 
+// increment value by 18
+db.QueryPractice.findOneAndUpdate(
+    { "_id" : 8 },
+    { $inc: { "Percent.Default" : 18 }}
+)
+
+// sets a max time limit to complete the update
+try{
+    db.QueryPractice.findOneAndUpdate(
+    { "_id" : 8 },
+    { $inc: { "Percent.Default" : 18 } , maxTime : 0.001}
+    )
+}
+catch(e){
+    print(e)
+}

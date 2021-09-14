@@ -95,3 +95,5 @@ try{
 catch(e){
     print(e)
 }
+
+db.QueryPractice.distinct("Percent.Override.From")

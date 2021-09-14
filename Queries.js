@@ -21,62 +21,34 @@ db.QueryPractice.insertOne(
     }
 )
 
-// $push appends value to an array
-db.QueryPractice.update({
-    "_id" : 8
-},
-{
-    $push:{
-        "Percent.Override": {
-            "From": [
-                "Ben"
-            ],
-            "To": [
-                "Bernie"
-            ],
-            "Percent" : "55.5"
-        }
-    }
-}
+// $push appends value to an array (Allows duplicates)
+db.QueryPractice.update(
+    { "_id" : 8 },
+    { $push: { "Percent.Override": { "From": [ "Ben" ], "To": [ "Bernie" ], "Percent" : "55.5" }}}
+)
+
+// $addToSet adds to an array. Will not create a duplicate 
+db.QueryPractice.update(
+    { "_id": 8 }, 
+    { $addToSet: { "Percent.Override" : { "From": [ "Charlotte" ], "To": [ "Johnny" ], "Percent": 18.00 }}}
 )
 
 //$pull remove from and array
-db.QueryPractice.update({
-    "_id" : 8
-},
-{
-    $pull: {
-        "Percent.Override": {
-            "From":[
-                "Ben"
-            ]
-        }
-    }
-}
+db.QueryPractice.update(
+    { "_id" : 8 },
+    { $pull: { "Percent.Override": { "From":[ "Ben" ]}}}
 )
 
 // $ <- positional operater updates the first matching element
-db.QueryPractice.update({
-    "_id" : 8,
-    "Percent.Override.From": [ "Joe" ]
-},
-{
-    $set: {
-        "Percent.Override.$.To": [ "Bert" ] 
-        }
-}
+db.QueryPractice.update(
+    { "_id" : 8, "Percent.Override.From": [ "Joe" ] },
+    { $set: { "Percent.Override.$.To": [ "Bert" ] }}
 )
 
 // $[] <- all positional updates all matching elements 
-db.QueryPractice.updateMany({
-    "_id" : 8,
-    "Percent.Override.From": [ "Ben" ]
-},
-{
-    $set: {
-        "Percent.Override.$[].Percent": "155.5" 
-        }
-}
+db.QueryPractice.updateMany(
+    { "_id" : 8, "Percent.Override.From":  [ "Ben" ]},
+    { $set: { "Percent.Override.$[].Percent": "155.5" }}
 )
 
 db.QueryPractice.updateMany(

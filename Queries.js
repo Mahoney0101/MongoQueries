@@ -2,20 +2,20 @@
 db.QueryPractice.insertOne(
     { "_id": 8,
       "Percent": 
-        { "Default" : "5.00" , 
+        { "Default" : 5.00 , 
           "Override" : [ 
             { 
               "From": [ "Joe" ],
               "To": [ "Mary" ],
-              "Percent": "12.00" }, 
+              "Percent": 12.00 }, 
             { 
               "From": [ "Bill" ],
               "To": [ "Ted" ],
-              "Percent": "2.00" },
+              "Percent": 2.00 },
             { 
               "From": [ "Bob" ],
               "To": [ "Anne" ],
-              "Percent": "1.00" } 
+              "Percent": 1.00 } 
           ] 
         }
     }
@@ -77,5 +77,33 @@ db.QueryPractice.updateMany({
         "Percent.Override.$[].Percent": "155.5" 
         }
 }
+)
+
+db.QueryPractice.updateMany(
+    {},
+    { $set: {"Percent.Override.$[elem].Percent": "123456.0"}},
+    { multi: true,
+      arrayFilters: [ { "elem.From": "Bob" }]}
+)
+
+db.QueryPractice.updateMany(
+    {},
+    { $set: {"Percent.Override.$[elem].Percent": "123456.0"}},
+    { multi: true,
+      arrayFilters: [ { "elem.From": { $gte : "C" } }]}
+)
+
+db.QueryPractice.updateMany(
+    {},
+    { $set: {"Percent.Override.$[elem].From": [ "James" ]}},
+    { multi: true,
+      arrayFilters: [ { "elem.Percent": { $gt : 1 } }]}
+)
+
+db.QueryPractice.updateMany(
+    {},
+    { $set: {"Percent.Override.$[elem].To": [ "Sarah" ]}},
+    { multi: true,
+      arrayFilters: [ { "elem.Percent": { $lte : 2 } }]}
 )
 
